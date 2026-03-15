@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>마법실종사건</title>
+
+<style>
+.fade-out{
+opacity:0;
+transition:opacity 0.6s ease;
+}
+
+.fade-in{
+opacity:1;
+transition:opacity 0.6s ease;
+}
+
+
+/* 입력창 흔들림 */
+
+@keyframes shake{
+0%{transform:translateX(0);}
+20%{transform:translateX(-6px);}
+40%{transform:translateX(6px);}
+60%{transform:translateX(-6px);}
+80%{transform:translateX(6px);}
+100%{transform:translateX(0);}
+}
+
+.shake{
+animation:shake 0.35s;
+}
+
+
+body{
+margin:0;
+background:#ffffff;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.screen{
+position:relative;
+width:100vw;
+min-height:100vh;
+background:#F3EFE6;
+font-family:Inter,sans-serif;
+}
+
+/* 상단 */
+
+.title-pill{
+position:absolute;
+top:87px;
+left:26px;
+width:136px;
+height:33px;
+background:#fff;
+border-radius:20px;
+box-shadow:0 4px 4px rgba(0,0,0,0.25);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+color:#6B4D20;
+font-size:20px;
+}
+
+.progress{
+position:absolute;
+top:101px;
+right:35px;
+font-weight:700;
+color:#6B4D20;
+font-size:16px;
+}
+
+
+/* 문제 영역 */
+
+.question-area{
+position:absolute;
+width:100%;
+top:136px;
+}
+
+/* 기본 이미지 */
+
+.image-base{
+width:350px;
+height:350px;
+margin:0 auto;
+background:url("image.png") center/cover no-repeat;
+}
+
+
+/* 문제 설명 */
+
+.question-text{
+margin-top:30px;
+text-align:center;
+color:#6B4D20;
+}
+
+.question-text .line1{
+font-size:22px;
+font-weight:700;
+margin-bottom:12px;
+}
+
+.question-text .line2{
+font-size:18px;
+margin-bottom:25px;
+}
+
+
+/* 입력창 */
+
+.answer-box{
+width:87%;
+height:46px;
+background:#FEFCF7;
+border:1px solid #6B4D20;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto;
+}
+
+.answer-box input{
+width:90%;
+border:none;
+outline:none;
+background:transparent;
+font-size:20px;
+text-align:center;
+}
+
+
+
+/* ===== 정답 화면 ===== */
+
+.image-answer{
+position:absolute;
+width:238px;
+height:356px;
+left:50%;
+transform: translateX(-50%);
+top:162px;
+background:url("image1.png") no-repeat center / cover;
+display:none;
+}
+
+.overlay-text{
+position:absolute;
+width:300px;
+left:calc(50% - 150px);
+top:237px;
+text-align:center;
+color:#6B4D20;
+display:none;
+}
+
+.overlay-text .line1{
+font-weight:700;
+font-size:24px;
+margin-bottom:14px;
+}
+
+.overlay-text .line2{
+font-weight:500;
+font-size:20px;
+line-height:28px;
+margin-bottom:18px;
+}
+
+.overlay-text .line3{
+font-weight:700;
+font-size:24px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+
+<div class="title-pill">십자말풀이</div>
+<div class="progress">진행률 50%</div>
+
+
+<!-- 문제 영역 -->
+<div id="questionArea" class="question-area">
+<br><br><br><br><br>
+
+<div class="question-text">
+<div class="line1">십자말풀이의 굵은 칸의 글자들을</div>
+<div class="line1">세로로 읽어보세요</div>
+<div class="line2">정답은 무엇인가요?</div>
+</div>
+
+<div class="answer-box">
+<input id="answerInput" type="text" placeholder="정답 입력 ↵">
+</div>
+
+</div>
+
+
+<!-- 정답 화면 -->
+<div id="answerImage" class="image-answer"></div>
+
+<div id="overlayText" class="overlay-text">
+
+<div class="line1">문제가 무엇인지 알아냈다!</div>
+
+<div class="line2">
+큐리오 상점에서 일어나고 있는<br>
+이상한 일의 원인은<br>
+“마법실종사건”이었어요!
+</div>
+
+<div class="line3">A봉투를 개봉하세요</div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+const input = document.getElementById("answerInput");
+const questionArea = document.getElementById("questionArea");
+const answerImage = document.getElementById("answerImage");
+const overlayText = document.getElementById("overlayText");
+const answerBox = document.querySelector(".answer-box");
+
+
+function checkAnswer(){
+
+const answer = input.value.trim();
+
+if(answer === "마법실종사건"){
+
+/* 페이드 아웃 */
+
+questionArea.classList.add("fade-out");
+
+setTimeout(()=>{
+
+questionArea.style.display = "none";
+
+answerImage.style.display = "block";
+overlayText.style.display = "block";
+
+/* 페이드 인 */
+
+answerImage.classList.add("fade-in");
+overlayText.classList.add("fade-in");
+
+},600);
+
+}else{
+
+/* 흔들림 애니메이션 */
+
+answerBox.classList.add("shake");
+
+setTimeout(()=>{
+answerBox.classList.remove("shake");
+},350);
+
+}
+
+}
+
+
+/* Enter 제출 */
+
+input.addEventListener("keydown",(e)=>{
+if(e.key === "Enter"){
+checkAnswer();
+}
+});
+</script>
+
+</body>
+</html>
